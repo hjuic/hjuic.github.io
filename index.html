@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазин фруктов</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body {
+            color: #fff;
+            background: #000 url(https://catherineasquithgallery.com/uploads/posts/2021-02/1614323841_49-p-foto-raznotsvetnikh-fonov-63.jpg) repeat-x fixed;
+        }
+
+        .btn {
+            display: inline-block; /* Строчно-блочный элемент */
+            background: #8C959D; /* Серый цвет фона */
+            color: #fff; /* Белый цвет текста */
+            padding: 1rem 1.5rem; /* Поля вокруг текста */
+            text-decoration: none; /* Убираем подчёркивание */
+            border-radius: 3px; /* Скругляем уголки */
+        }
+    </style>
+
+</head>
+<body>
+<div id="product-list">
+    <div class="product" data-id="1">
+        <img src="https://ketokotleta.ru/wp-content/uploads/6/c/2/6c27be5657cb3903c55d1b46e50af6fe.jpeg" width="130" height="111" alt="Яблоко">
+        <h3>Яблоко</h3>
+        <p>Цена: 50 рублей</p>
+        <button class="add-to-cart">Добавить в корзину</button>
+    </div>
+    <div class="product" data-id="2">
+        <img src="https://static.wixstatic.com/media/ad420a_45c7a2d06f284ddeb66631d6b0c08325~mv2.jpg/v1/fill/w_4803,h_3647,al_c,q_90/file.jpg" width="130" height="110" alt="Банан">
+        <h3>Банан</h3>
+        <p>Цена: 70 рублей</p>
+        <button class="add-to-cart">Добавить в корзину</button>
+    </div>
+    <div class="product" data-id="3">
+        <img src="https://catherineasquithgallery.com/uploads/posts/2021-03/1614548405_63-p-apelsin-na-belom-fone-82.jpg" width="130" height="110" alt="Апельсин">
+        <h3>Апельсин</h3>
+        <p>Цена: 60 рублей</p>
+        <button class="add-to-cart">Добавить в корзину</button>
+    </div>
+</div>
+
+<div id="cart">
+    <h2>Корзина</h2>
+    <ul id="cart-items"></ul>
+    <p>Общая стоимость: <span id="total-price">0</span> рублей</p>
+</div>
+
+<a href="https://t.me/voplopoll" target="_blank">
+    <img src="https://img.icons8.com/color/48/000000/telegram-app.png" width="70" height="70" class="rightpic">
+</a>
+
+<script>
+    const productList = document.querySelector('#product-list');
+    const cartItems = document.querySelector('#cart-items');
+    const totalPrice = document.querySelector('#total-price');
+    let cart = [];
+
+    productList.addEventListener('click', e => {
+        if (e.target.classList.contains('add-to-cart')) {
+            const product = e.target.parentNode;
+            const productId = product.getAttribute('data-id');
+            const productName = product.querySelector('h3').innerText;
+            const productPrice = parseFloat(product.querySelector('p').innerText.split(' ')[1]);
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+            updateCart();
+        }
+    });
+
+    function updateCart() {
+        cartItems.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = `${item.name} x ${item.quantity} - ${item.price * item.quantity} рублей`;
+            cartItems.appendChild(li);
+            total += item.price * item.quantity;
+        });
+        totalPrice.innerText = total;
+    }
+</script>
+
+</body>
+</html>
